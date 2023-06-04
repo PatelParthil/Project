@@ -1,0 +1,36 @@
+# References used for creating the file
+# 1. https://docs.gitlab.com/ee/ci/cloud_deployment/heroku.html
+#  - Line 24 - 33: Part of script copied 
+
+stages:
+ - build
+ - test
+ - deploy                        
+                                 
+maven-build:                     
+  image: maven:3.8.3-openjdk-17          
+  stage: build                   
+  script: "mvn package -B"       
+  artifacts:                     
+    paths:                       
+      - gitlab-ci-test.jar
+
+maven-test:
+    stage: test
+    image: maven:3.8.3-openjdk-17 
+    script:
+    - "mvn test"
+
+#heroku-deploy:
+#  stage: deploy
+#  image: ruby:2.6.0
+#  except:
+#    - main
+#  script:
+#    - apt-get update -qy
+#    - apt-get install -y ruby-dev
+#    - gem install dpl
+#    - dpl --provider=heroku --app=$HEROKU_APP_NAME_TEST --api-key=$HEROKU_PRODUCTION_KEY
+  
+  
+
